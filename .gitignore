@@ -1,0 +1,5 @@
+/src/web/appsettings.json
+/src/web/appsettings.Development.json
+/src/web/obj
+/src/web/bin
+/src/.vs
