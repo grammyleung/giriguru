@@ -1,6 +1,6 @@
 ﻿# GiriGuru
 
-[GiriGuru](http://giri.guru) is a project, of personal blog and maybe something else I'm sure if I'm going to work on but basically will "giriguru" about personal stuff. It is absolutely free, [open source](https://github.com/grammyleung/giriguru/) and distributed under the MIT license.
+[GiriGuru](http://giri.guru) is a project, of personal blog and maybe something else I'm not sure if I'm going to work on but basically will "giriguru" about personal stuff. It is absolutely free, [open source](https://github.com/grammyleung/giriguru/) and distributed under the MIT license.
 
 GiriGuru works with MongoDB only, if you are interested in using it, you can apply for a free-tier MongoDB Atla Cluster, which I think enough for personal use, or host yourself. GiriGuru website can be hosted in an free-tier AWS server or your other choice as well.
 
