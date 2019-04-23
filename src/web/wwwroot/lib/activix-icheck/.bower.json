@@ -1,0 +1,15 @@
+{
+  "name": "activix-icheck",
+  "homepage": "https://github.com/activix/icheck",
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0",
+    "commit": "a31ce22b1bb4a79b0c907500437f5ce61a996d13"
+  },
+  "_source": "https://github.com/activix/icheck.git",
+  "_target": "2.0.0",
+  "_originalSource": "activix-icheck",
+  "_direct": true
+}

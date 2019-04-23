@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using GiriGuru.Web.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -88,33 +89,23 @@ namespace GiriGuru.Web
 			var dbSettingsSection = Configuration.GetSection("DbSettings");
 			services.Configure<DbSettings>(dbSettingsSection);
 			AppSettings.DbSettings = dbSettingsSection.Get<DbSettings>();
-
-			if (AppSettings.DbSettings != null)
-			{
-				if (!string.IsNullOrEmpty(AppSettings.DbSettings.DatabaseName)) Virgo.DB.Config.DatabaseName = AppSettings.DbSettings.DatabaseName;
-				if (!string.IsNullOrEmpty(AppSettings.DbSettings.Username)) Virgo.DB.Config.Username = AppSettings.DbSettings.Username;
-				if (!string.IsNullOrEmpty(AppSettings.DbSettings.Password)) Virgo.DB.Config.Password = AppSettings.DbSettings.Password;
-				Virgo.DB.Config.UseSsl = AppSettings.DbSettings.UseSsl;
-				if (AppSettings.DbSettings.Servers.Length > 0)
-				{
-					List<MongoDB.Driver.MongoServerAddress> servers = new List<MongoDB.Driver.MongoServerAddress>();
-					foreach (string s in AppSettings.DbSettings.Servers)
-					{
-						if (s.Contains(":") && int.TryParse(s.Split(":")[1], out int p))
-						{
-							string host = s.Split(":")[0];
-							int port = p;
-							servers.Add(new MongoDB.Driver.MongoServerAddress(host, port));
-						}
-					}
-					Virgo.DB.Config.Servers = servers.ToArray();
-				}
-			}
-
 			/* End Db Settings Related */
 
 
+			/* Start File Settings Related */
+			// configure strongly typed settings objects
+			var fileSettingsSection = Configuration.GetSection("FileSettings");
+			services.Configure<FileSettings>(fileSettingsSection);
+			AppSettings.FileSettings = fileSettingsSection.Get<FileSettings>();
+			/* End File Settings Related */
 
+
+			/* Start User Settings Related */
+			// configure strongly typed settings objects
+			var adminSettingsSection = Configuration.GetSection("AdminSettings");
+			services.Configure<AdminSettings>(adminSettingsSection);
+			AppSettings.AdminSettings = adminSettingsSection.Get<AdminSettings>();
+			/* End User Settings Related */
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -131,6 +122,34 @@ namespace GiriGuru.Web
 
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
+
+			/* Start Adding based on default setting */
+			app.UseHttpsRedirection();
+			app.UseSession();
+
+			// global cors policy
+			app.UseCors(x => x
+				.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader()
+				.AllowCredentials()
+			);
+
+			// localization
+			var supportedCultures = new[]
+			{
+				new CultureInfo("en"),
+				new CultureInfo("zh")
+			};
+			app.UseRequestLocalization(new RequestLocalizationOptions
+			{
+				DefaultRequestCulture = new RequestCulture("en"),
+				// Formatting numbers, dates, etc.
+				SupportedCultures = supportedCultures,
+				// UI strings that we have localized.
+				SupportedUICultures = supportedCultures
+			});
+			/* End Adding based on default setting */
 
 			app.UseMvc(routes =>
 			{

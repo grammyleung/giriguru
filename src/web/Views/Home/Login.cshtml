@@ -1,0 +1,84 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Primitives
+@using GiriGuru.Web
+
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<SharedString> SharedStringLocalizer
+
+@{
+	Layout = "~/Views/Shared/_Screen.cshtml";
+	ViewData["Title"] = Localizer["page-title"];
+
+	@*
+	var referrer = Context.Request.Headers["Referer"];
+	var returnUrl = string.IsNullOrEmpty(referrer) ? "~/" : referrer.ToString();
+	*@
+
+	string fromUrl = "~/";
+	if (Context.Request.Query.TryGetValue("returnUrl", out StringValues r))
+	{
+		fromUrl = r;
+	}
+}
+
+@section page_head
+	{
+}
+
+<div class="login-box-body">
+	<p class="login-box-msg">@Localizer["label-sign-in"]</p>
+	<form id="selectLanguage" asp-controller="Home"
+		  asp-action="Login" asp-route-returnUrl="@fromUrl"
+		  method="post" role="form">
+		<div class="form-group has-feedback">
+			<input type="email" name="formEmail" class="form-control" placeholder="@Localizer["form-placeholder-email"]">
+			<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+		</div>
+		<div class="form-group has-feedback">
+			<input type="password" name="formPassword" class="form-control" placeholder="@Localizer["form-placeholder-password"]">
+			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		</div>
+		<div class="row">
+			<div class="col-xs-8">
+				<div>
+					<input type="checkbox" name="formRemember" style="zoom:1.8; top: 10px;" />
+					<label style="position:relative; top:-8px; font-weight:normal">
+						@Localizer["form-checkbox-remember-me"]
+					</label>
+				</div>
+			</div>
+			<!-- /.col -->
+			<div class="col-xs-4">
+				<button type="submit" id="FormSubmit" class="btn btn-primary btn-block btn-flat">@Localizer["form-button-sign-in"]</button>
+			</div>
+			<!-- /.col -->
+		</div>
+	</form>
+	@*
+		<div class="social-auth-links text-center">
+			<p>- OR -</p>
+			<a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+				<i class="fa fa-facebook"></i> Sign in using
+				Facebook
+			</a>
+			<a href="#" class="btn btn-block btn-social btn-google btn-flat">
+				<i class="fa fa-google-plus"></i> Sign in using
+				Google+
+			</a>
+		</div>
+		<!-- /.social-auth-links -->
+
+		<a href="#">I forgot my password</a><br>
+		<a href="register.html" class="text-center">Register a new membership</a>
+	*@
+</div>
+<!-- /.login-box-body -->
+
+@section page_foot
+	{
+}
